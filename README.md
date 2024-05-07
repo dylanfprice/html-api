@@ -1,6 +1,6 @@
 # HTML API
 
-Should we be serving our APIs in HTML?
+Should we be serving our APIs in HTML? A thought experiment.
 
 ## Problems with CRUD "REST" APIs
 
@@ -42,14 +42,14 @@ E.g. [HAL](https://en.wikipedia.org/wiki/Hypertext_Application_Language), [JSON 
 
 ## HTML APIs
 
-If we use html + [htmx](https://htmx.org/) as a format standard, it's pretty interesting.
+If we use html as a format, it's pretty interesting.
 
 Check out the example api I threw together.
 
 - Great type system and the schema is delivered with the data.
     - HTML5 input types are nearly as expressive as Jsonschema. `min`, `max`, `step`, `minLength`, `maxLength`, `pattern`, `required`, it's all there.
     - Native date and time types! Plus email, URL, etc.
-    - Files are easy!
+    - Files are easy! `multipart/form-data` to the rescue.
     - No floating point serialization issues.
     - Unlike JSON, if you receive a set of HTML5 input elements you know exactly how to parse them.
 - HATEOAS
