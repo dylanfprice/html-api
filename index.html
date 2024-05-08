@@ -4,16 +4,19 @@
 <head>
   <script defer src="/vendor/sinon-3.3.0.js"></script>
   <script defer src="/vendor/htmx.org-1.9.12.js"></script>
-  <style>
-    a {
-      display: block;
-    }
-
-  </style>
 </head>
 
 <body hx-boost="true">
-  <a href="/people">People</a>
+  <p>
+    Welcome to the HTML API example. This is a fully self-contained example API
+    which you can use in the browser. You can look at the <code>data</code>
+    variable in your browser console to inspect the "database." Too see the
+    implementation of the "server," look at
+    <a hx-boost="false" href="/index.js"><code>index.js</code></a>
+  </p>
+  <p>
+    Go to <a href="/people">People API</a>
+  </p>
   <script defer src="index.js"></script>
 </body>
 

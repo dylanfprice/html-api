@@ -50,9 +50,9 @@ function mockServer() {
 			})}
       </api-data>
       ${data.people.map(person => (
-				`<a rel="item" href="/people/${person.id}">${person.id}: ${person.name}</a>`
+				`<p><a rel="item" href="/people/${person.id}">${person.id}: ${person.name}</a></p>`
 			)).join('')}
-      <a rel="create-form" href="/people?form=create">Create person</a>
+			<p><a rel="create-form" href="/people?form=create">Create person</a></p>
       `,
 		)
 	});
@@ -66,9 +66,9 @@ function mockServer() {
       <api-data>
         ${personInputs(person, disabled = true)}
       </api-data>
-      <a rel="self" href="/people/${id}">Self</a>
-      <a rel="edit-form" href="/people/${id}?form=edit">Edit person</a>
-      <a rel="collection" href="/people">Go to collection</a>
+			<p><a rel="self" href="/people/${id}">Self</a></p>
+			<p><a rel="edit-form" href="/people/${id}?form=edit">Edit person</a></p>
+			<p><a rel="collection" href="/people">Go to collection</a></p>
       `,
 		);
 	});
