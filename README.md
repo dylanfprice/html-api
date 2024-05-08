@@ -2,7 +2,7 @@
 
 Should we be serving our APIs in HTML? A thought experiment.
 
-[Example API](https://dylanfprice.github.io/html-api/people)
+[Example API](https://dylanfprice.github.io/html-api)
 
 ## Problems with CRUD "REST" APIs
 
@@ -46,7 +46,7 @@ E.g. [HAL](https://en.wikipedia.org/wiki/Hypertext_Application_Language), [JSON 
 
 If we use html as a format, it's pretty interesting.
 
-Check out the [example API](https://dylanfprice.github.io/html-api/people) I threw together.
+Check out the [example API](https://dylanfprice.github.io/html-api) I threw together.
 
 - Great type system and the schema is delivered with the data.
     - HTML5 input types are nearly as expressive as Jsonschema. `min`, `max`, `step`, `minLength`, `maxLength`, `pattern`, `required`, it's all there.
