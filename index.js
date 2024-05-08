@@ -36,7 +36,7 @@ const emptyPerson = {
 function mockServer() {
 	const server = sinon.fakeServer.create({autoRespond: true});
 
-	server.respondWith("GET", "/people", function (xhr) {
+	server.respondWith("GET", "/html-api/people", function (xhr) {
 		xhr.respond(
 			200,
 			{"Content-Type": "text/html"},
@@ -50,14 +50,14 @@ function mockServer() {
 			})}
       </api-data>
       ${data.people.map(person => (
-				`<p><a rel="item" href="/people/${person.id}">${person.id}: ${person.name}</a></p>`
+				`<p><a rel="item" href="/html-api/people/${person.id}">${person.id}: ${person.name}</a></p>`
 			)).join('')}
-			<p><a rel="create-form" href="/people?form=create">Create person</a></p>
+			<p><a rel="create-form" href="/html-api/people?form=create">Create person</a></p>
       `,
 		)
 	});
 
-	server.respondWith("GET", /\/people\/(\d+)/, function (xhr, id) {
+	server.respondWith("GET", /\/html-api\/people\/(\d+)/, function (xhr, id) {
 		const person = data.people.find(person => person.id === id);
 		xhr.respond(
 			200,
@@ -66,19 +66,19 @@ function mockServer() {
       <api-data>
         ${personInputs(person, disabled = true)}
       </api-data>
-			<p><a rel="self" href="/people/${id}">Self</a></p>
-			<p><a rel="edit-form" href="/people/${id}?form=edit">Edit person</a></p>
-			<p><a rel="collection" href="/people">Go to collection</a></p>
+			<p><a rel="self" href="/html-api/people/${id}">Self</a></p>
+			<p><a rel="edit-form" href="/html-api/people/${id}?form=edit">Edit person</a></p>
+			<p><a rel="collection" href="/html-api/people">Go to collection</a></p>
       `,
 		);
 	});
 
-	server.respondWith("GET", "/people?form=create", function (xhr) {
+	server.respondWith("GET", "/html-api/people?form=create", function (xhr) {
 		xhr.respond(
 			200,
 			{"Content-Type": "text/html"},
 			`
-      <form hx-post="/people">
+      <form hx-post="/html-api/people">
         ${personInputs(emptyPerson, disabled = false)}
         <input type="submit" />
       </form>
@@ -86,7 +86,7 @@ function mockServer() {
 		);
 	});
 
-	server.respondWith("GET", /\/people\?form=phone&index=(\d+)/, function (xhr, index) {
+	server.respondWith("GET", /\/html-api\/people\?form=phone&index=(\d+)/, function (xhr, index) {
 		xhr.respond(
 			200,
 			{"Content-Type": "text/html"},
@@ -108,13 +108,13 @@ function mockServer() {
 		)
 	});
 
-	server.respondWith("GET", /\/people\/(\d+)\?form=edit/, function (xhr, id) {
+	server.respondWith("GET", /\/html-api\/people\/(\d+)\?form=edit/, function (xhr, id) {
 		const person = data.people.find(person => person.id === id);
 		xhr.respond(
 			200,
 			{"Content-Type": "text/html"},
 			`
-      <form hx-put="/people/${person.id}">
+      <form hx-put="/html-api/people/${person.id}">
       ${personInputs(person, disabled = false)}
       <input type="submit" />
       </form >
@@ -122,26 +122,26 @@ function mockServer() {
 		);
 	});
 
-	server.respondWith("POST", "/people", function (xhr) {
+	server.respondWith("POST", "/html-api/people", function (xhr) {
 		const object = paramsToObject(xhr.requestBody)
 		object.id = peopleCounter.toString();
 		peopleCounter++;
 		data.people.push(object);
 		xhr.respond(
 			201,
-			{Location: `/people/${object.id}`, "HX-Location": `/people/${object.id}`},
+			{Location: `/html-api/people/${object.id}`, "HX-Location": `/html-api/people/${object.id}`},
 			""
 		)
 	});
 
-	server.respondWith("PUT", /\/people\/(\d+)/, function (xhr, id) {
+	server.respondWith("PUT", /\/html-api\/people\/(\d+)/, function (xhr, id) {
 		const object = paramsToObject(xhr.requestBody)
 		object.id = id;
 		const index = data.people.findIndex(person => person.id === id);
 		data.people[index] = object;
 		xhr.respond(
 			204,
-			{Location: `/people/${object.id}`, "HX-Location": `/people/${object.id}`},
+			{Location: `/html-api/people/${object.id}`, "HX-Location": `/html-api/people/${object.id}`},
 			""
 		)
 	});
@@ -259,7 +259,7 @@ function input({type, disabled, name, value}) {
 
 function addPhoneButton(index) {
 	return `
-    <button hx-swap="outerHTML" hx-get="/people?form=phone&index=${index}">
+    <button hx-swap="outerHTML" hx-get="/html-api/people?form=phone&index=${index}">
     Add phone number
     </button >
   `
