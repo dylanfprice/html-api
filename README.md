@@ -56,7 +56,7 @@ Check out the [example API](https://dylanfprice.github.io/html-api) I threw toge
     - Unlike JSON, if you receive a set of HTML5 input elements you know exactly how to parse them.
 - HATEOAS
     - We can include links to HTML forms in our responses, allowing clients to discover what actions are available (based on current state) and how to execute them.
-    - By adopting [htmx](https://htmx.org/) as a convention, we can make forms which PUT, DELETE, etc.
+    - By adopting `hx-put`, `hx-delete`, etc. from [htmx](https://htmx.org/) as a convention, we can make forms which PUT, DELETE, etc.
 - HTML makes for a great self-documenting, natively browseable API format.
     - Like Swagger or GraphiQL, but there's no separate tooling and it's a lot more flexible.
 - Unlike the hypermedia JSON APIs, HTML has good tooling.
