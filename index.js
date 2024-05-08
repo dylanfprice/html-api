@@ -21,9 +21,7 @@ peopleCounter++;
 
 const emptyPerson = {
 	name: "",
-	phones: [
-		{label: "", number: ""}
-	],
+	phones: [],
 	address: {
 		line_1: "",
 		line_2: "",
@@ -68,6 +66,18 @@ function mockServer() {
       </api-data>
 			<p><a rel="self" href="/html-api/people/${id}">Self</a></p>
 			<p><a rel="edit-form" href="/html-api/people/${id}?form=edit">Edit person</a></p>
+			${person.phones.length > 0 ? (
+				`
+			    <p>
+						<a rel="/html-api/rel/send-message" 
+						   href="/html-api/people/${id}?form=send-message"
+						>
+						  Send message
+						</a>
+					</p>
+					`
+			) : ""
+			}
 			<p><a rel="collection" href="/html-api/people">Go to collection</a></p>
       `,
 		);
@@ -122,8 +132,36 @@ function mockServer() {
 		);
 	});
 
+	server.respondWith("GET", /\/html-api\/people\/(\d+)\?form=send-message/, function (xhr, id) {
+		const person = data.people.find(person => person.id === id);
+		xhr.respond(
+			200,
+			{"Content-Type": "text/html"},
+			`
+      <form hx-post="/html-api/people/${person.id}/send-message">
+				<label for="phone">Choose a phone:</label>
+				<select name="phone">
+				  ${person.phones.map(phone => (
+				`<option value="${phone.number}">${phone.label}</option>`
+			))}
+				</select>
+				${input({
+				type: "textarea",
+				disabled: false,
+				name: "message",
+				value: "",
+			})}
+				<input type="submit" />
+      </form >
+      `
+		);
+	});
+
 	server.respondWith("POST", "/html-api/people", function (xhr) {
 		const object = paramsToObject(xhr.requestBody)
+		if (!("phones" in object)) {
+			object.phones = [];
+		}
 		object.id = peopleCounter.toString();
 		peopleCounter++;
 		data.people.push(object);
@@ -145,6 +183,35 @@ function mockServer() {
 			""
 		)
 	});
+
+	server.respondWith("POST", /\/html-api\/people\/(\d+)\/send-message/, function (xhr, id) {
+		const object = paramsToObject(xhr.requestBody)
+		xhr.respond(
+			200,
+			{"Content-Type": "text/html"},
+			`
+				<label for="message_sent">message_sent</label>
+				<input type="checkbox" name="message_sent" checked />
+				<api-data>
+					${input({
+				type: "tel",
+				disabled,
+				name: "phone",
+				value: object.phone,
+			})}
+				</api-data>
+				<p><a rel="collection" href="/html-api/people">View all people</a></p>
+			`
+		)
+	});
+
+	server.respondWith("GET", "/html-api/rel/send-message", function (xhr) {
+		xhr.respond(
+			200,
+			{"Content-Type": "text/html"},
+			`<p><code>send-message</code> refers to a form that can be used to send a user a message.</p>`
+		)
+	})
 }
 
 function paramsToObject(paramsString) {
@@ -196,7 +263,7 @@ function personInputs(person, disabled) {
 				value: phone.label,
 			})}
       ${input({
-				type: "text",
+				type: "tel",
 				disabled,
 				name: `phones[${index}].number`,
 				value: phone.number,
