@@ -41,14 +41,19 @@ function mockServer() {
 			200,
 			{"Content-Type": "text/html"},
 			`
-			<api-data>
-				<input type="number" name="count" value="${data.people.length}" />
-			</api-data>
-			${data.people.map(person => (
-				`<a rel="item" href="/people/${person.id}">${person.id}</a>`
-			))}
-			<a rel="create-form" href="/people?form=create">Create person</a>
-			`,
+      <api-data>
+        ${input({
+				type: "number",
+				disabled: true,
+				name: "count",
+				value: data.people.length,
+			})}
+      </api-data>
+      ${data.people.map(person => (
+				`<a rel="item" href="/people/${person.id}">${person.id}: ${person.name}</a>`
+			)).join('')}
+      <a rel="create-form" href="/people?form=create">Create person</a>
+      `,
 		)
 	});
 
@@ -58,13 +63,13 @@ function mockServer() {
 			200,
 			{"Content-Type": "text/html"},
 			`
-			<api-data>
-				${personInputs(person, disabled = true)}
-			</api-data>
-			<a rel="self" href="/people/${id}">Self</a>
-			<a rel="edit-form" href="/people/${id}?form=edit">Edit person</a>
-			<a rel="collection" href="/people">Go to collection</a>
-			`,
+      <api-data>
+        ${personInputs(person, disabled = true)}
+      </api-data>
+      <a rel="self" href="/people/${id}">Self</a>
+      <a rel="edit-form" href="/people/${id}?form=edit">Edit person</a>
+      <a rel="collection" href="/people">Go to collection</a>
+      `,
 		);
 	});
 
@@ -73,11 +78,11 @@ function mockServer() {
 			200,
 			{"Content-Type": "text/html"},
 			`
-			<form hx-post="/people">
-				${personInputs(emptyPerson, disabled = false)}
-				<input type="submit" />
-			</form>
-			`
+      <form hx-post="/people">
+        ${personInputs(emptyPerson, disabled = false)}
+        <input type="submit" />
+      </form>
+      `
 		);
 	});
 
@@ -86,20 +91,20 @@ function mockServer() {
 			200,
 			{"Content-Type": "text/html"},
 			`
-				${input({
+        ${input({
 				type: "text",
 				disabled: false,
 				name: `phones[${index}].label`,
 				value: "",
 			})}
-				${input({
+        ${input({
 				type: "text",
-				disabled,
+				disabled: false,
 				name: `phones[${index}].number`,
 				value: "",
 			})}
-				${addPhoneButton(index + 1)}
-				`
+        ${addPhoneButton(index + 1)}
+        `
 		)
 	});
 
@@ -109,11 +114,11 @@ function mockServer() {
 			200,
 			{"Content-Type": "text/html"},
 			`
-			<form hx-put="/people/${person.id}">
-			${personInputs(person, disabled = false)}
-			<input type="submit" />
-			</form >
-			`
+      <form hx-put="/people/${person.id}">
+      ${personInputs(person, disabled = false)}
+      <input type="submit" />
+      </form >
+      `
 		);
 	});
 
@@ -175,60 +180,60 @@ function paramsToObject(paramsString) {
 
 function personInputs(person, disabled) {
 	return `
-		${input({
+    ${input({
 		type: "text",
 		disabled,
 		name: "name",
 		value: person.name,
 	})
 		}
-		${person.phones.map((phone, index) => (
+    ${person.phones.map((phone, index) => (
 			`
-			${input({
+      ${input({
 				type: "text",
 				disabled,
 				name: `phones[${index}].label`,
 				value: phone.label,
 			})}
-			${input({
+      ${input({
 				type: "text",
 				disabled,
 				name: `phones[${index}].number`,
 				value: phone.number,
 			})}
-			`
-		))
+      `
+		)).join('')
 		}
-		${!disabled ? addPhoneButton(person.phones.length) : ""}
-		${input({
+    ${!disabled ? addPhoneButton(person.phones.length) : ""}
+    ${input({
 			type: "text",
 			disabled,
 			name: "address.line_1",
 			value: person.address.line_1,
 		})
 		}
-		${input({
+    ${input({
 			type: "text",
 			disabled,
 			name: "address.line_2",
 			value: person.address.line_2,
 		})
 		}
-		${input({
+    ${input({
 			type: "text",
 			disabled,
 			name: "address.city",
 			value: person.address.city,
 		})
 		}
-		${input({
+    ${input({
 			type: "text",
 			disabled,
 			name: "address.state",
 			value: person.address.state,
 		})
 		}
-		${input({
+    ${input({
 			type: "text",
 			disabled,
 			name: "address.zip",
@@ -240,22 +245,24 @@ function personInputs(person, disabled) {
 
 function input({type, disabled, name, value}) {
 	return `
-	  <label for="${name}"> ${name}</label >
-		<input
-			${disabled ? "disabled" : ""}
-			type="${type}"
-			name="${name}"
-			value="${value}"
-		/>
+    <div>
+      <label for="${name}"> ${name}</label >
+      <input
+        ${disabled ? "disabled" : ""}
+        type="${type}"
+        name="${name}"
+        value="${value}"
+      />
+    </div>
 `
 }
 
 function addPhoneButton(index) {
 	return `
-	  <button hx-swap="outerHTML" hx-get="/people?form=phone&index=${index}">
-		Add phone number
-	  </button >
-	`
+    <button hx-swap="outerHTML" hx-get="/people?form=phone&index=${index}">
+    Add phone number
+    </button >
+  `
 
 }
 
