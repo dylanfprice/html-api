@@ -66,3 +66,10 @@ Check out the [example API](https://dylanfprice.github.io/html-api) I threw toge
     - We can simply and easily link resources to each other (no need to tell our code that `foo_id` is a "foreign key" to a foo and we can look up that foo by going to `/foo/{id}`--or the GraphQL equivalent of this). 
     - Not only can we link to resources, but we can use [link relations](https://www.iana.org/assignments/link-relations/link-relations.xhtml) (i.e. `rel`) to describe what kind of relationship it is.
     - Full semantics of HTTP caching. E.g. you could track the Etag on a form to see if an API endpoint changes, as a simple form of contract testing.
+
+### Downsides
+
+Of course there are some downsides, and I'm sure more that I am not thinking of.
+
+- No nested types. We can approximate with pseudo-standards like `phone[0].number` as the field name.
+- Not quite prescriptive enough. We need some conventions for how we can reliably find data, links, etc. in an html document. It could be as simple as "parse all `<input>` tags to get the data," "parse all `<a>` tags to get the links," and "if a link returns a document with a `<form>` tag then that represents an API action which can be taken." 
