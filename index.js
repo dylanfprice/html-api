@@ -39,19 +39,19 @@ function mockServer() {
 			200,
 			{"Content-Type": "text/html"},
 			`
-      <api-data>
-        ${input({
+			<api-data>
+				${input({
 				type: "number",
 				disabled: true,
 				name: "count",
 				value: data.people.length,
 			})}
-      </api-data>
-      ${data.people.map(person => (
+			</api-data>
+			${data.people.map(person => (
 				`<p><a rel="item" href="/html-api/people/${person.id}">${person.id}: ${person.name}</a></p>`
 			)).join('')}
-      <p><a rel="create-form" href="/html-api/people?form=create">Create person</a></p>
-      `,
+			<p><a rel="create-form" href="/html-api/people?form=create">Create person</a></p>
+			`,
 		)
 	});
 
@@ -61,25 +61,25 @@ function mockServer() {
 			200,
 			{"Content-Type": "text/html"},
 			`
-      <api-data>
-        ${personInputs(person, disabled = true)}
-      </api-data>
-      <p><a rel="self" href="/html-api/people/${id}">Self</a></p>
-      <p><a rel="edit-form" href="/html-api/people/${id}?form=edit">Edit person</a></p>
-      ${person.phones.length > 0 ? (
+			<api-data>
+				${personInputs(person, disabled = true)}
+			</api-data>
+			<p><a rel="self" href="/html-api/people/${id}">Self</a></p>
+			<p><a rel="edit-form" href="/html-api/people/${id}?form=edit">Edit person</a></p>
+			${person.phones.length > 0 ? (
 				`
-          <p>
-            <a rel="/html-api/rel/send-message" 
-               href="/html-api/people/${id}?form=send-message"
-            >
-              Send message
-            </a>
-          </p>
-          `
+					<p>
+						<a rel="/html-api/rel/send-message" 
+							 href="/html-api/people/${id}?form=send-message"
+						>
+							Send message
+						</a>
+					</p>
+					`
 			) : ""
 			}
-      <p><a rel="collection" href="/html-api/people">Go to collection</a></p>
-      `,
+			<p><a rel="collection" href="/html-api/people">Go to collection</a></p>
+			`,
 		);
 	});
 
@@ -88,11 +88,11 @@ function mockServer() {
 			200,
 			{"Content-Type": "text/html"},
 			`
-      <form hx-post="/html-api/people">
-        ${personInputs(emptyPerson, disabled = false)}
-        <input type="submit" />
-      </form>
-      `
+			<form hx-post="/html-api/people">
+				${personInputs(emptyPerson, disabled = false)}
+				<input type="submit" />
+			</form>
+			`
 		);
 	});
 
@@ -101,20 +101,20 @@ function mockServer() {
 			200,
 			{"Content-Type": "text/html"},
 			`
-        ${input({
+				${input({
 				type: "text",
 				disabled: false,
 				name: `phones[${index}].label`,
 				value: "",
 			})}
-        ${input({
+				${input({
 				type: "text",
 				disabled: false,
 				name: `phones[${index}].number`,
 				value: "",
 			})}
-        ${addPhoneButton(index + 1)}
-        `
+				${addPhoneButton(index + 1)}
+				`
 		)
 	});
 
@@ -124,11 +124,11 @@ function mockServer() {
 			200,
 			{"Content-Type": "text/html"},
 			`
-      <form hx-put="/html-api/people/${person.id}">
-      ${personInputs(person, disabled = false)}
-      <input type="submit" />
-      </form >
-      `
+			<form hx-put="/html-api/people/${person.id}">
+			${personInputs(person, disabled = false)}
+			<input type="submit" />
+			</form >
+			`
 		);
 	});
 
@@ -138,22 +138,22 @@ function mockServer() {
 			200,
 			{"Content-Type": "text/html"},
 			`
-      <form hx-post="/html-api/people/${person.id}/send-message">
-        <label for="phone">Choose a phone:</label>
-        <select name="phone">
-          ${person.phones.map(phone => (
+			<form hx-post="/html-api/people/${person.id}/send-message">
+				<label for="phone">Choose a phone:</label>
+				<select name="phone">
+					${person.phones.map(phone => (
 				`<option value="${phone.number}">${phone.label}</option>`
 			))}
-        </select>
-        ${input({
+				</select>
+				${input({
 				type: "textarea",
 				disabled: false,
 				name: "message",
 				value: "",
 			})}
-        <input type="submit" />
-      </form >
-      `
+				<input type="submit" />
+			</form >
+			`
 		);
 	});
 
@@ -190,18 +190,18 @@ function mockServer() {
 			200,
 			{"Content-Type": "text/html"},
 			`
-        <label for="message_sent">message_sent</label>
-        <input type="checkbox" name="message_sent" checked />
-        <api-data>
-          ${input({
+				<label for="message_sent">message_sent</label>
+				<input type="checkbox" name="message_sent" checked />
+				<api-data>
+					${input({
 				type: "tel",
 				disabled,
 				name: "phone",
 				value: object.phone,
 			})}
-        </api-data>
-        <p><a rel="collection" href="/html-api/people">View all people</a></p>
-      `
+				</api-data>
+				<p><a rel="collection" href="/html-api/people">View all people</a></p>
+			`
 		)
 	});
 
@@ -247,60 +247,60 @@ function paramsToObject(paramsString) {
 
 function personInputs(person, disabled) {
 	return `
-    ${input({
+		${input({
 		type: "text",
 		disabled,
 		name: "name",
 		value: person.name,
 	})
 		}
-    ${person.phones.map((phone, index) => (
+		${person.phones.map((phone, index) => (
 			`
-      ${input({
+			${input({
 				type: "text",
 				disabled,
 				name: `phones[${index}].label`,
 				value: phone.label,
 			})}
-      ${input({
+			${input({
 				type: "tel",
 				disabled,
 				name: `phones[${index}].number`,
 				value: phone.number,
 			})}
-      `
+			`
 		)).join('')
 		}
-    ${!disabled ? addPhoneButton(person.phones.length) : ""}
-    ${input({
+		${!disabled ? addPhoneButton(person.phones.length) : ""}
+		${input({
 			type: "text",
 			disabled,
 			name: "address.line_1",
 			value: person.address.line_1,
 		})
 		}
-    ${input({
+		${input({
 			type: "text",
 			disabled,
 			name: "address.line_2",
 			value: person.address.line_2,
 		})
 		}
-    ${input({
+		${input({
 			type: "text",
 			disabled,
 			name: "address.city",
 			value: person.address.city,
 		})
 		}
-    ${input({
+		${input({
 			type: "text",
 			disabled,
 			name: "address.state",
 			value: person.address.state,
 		})
 		}
-    ${input({
+		${input({
 			type: "text",
 			disabled,
 			name: "address.zip",
@@ -312,25 +312,24 @@ function personInputs(person, disabled) {
 
 function input({type, disabled, name, value}) {
 	return `
-    <div>
-      <label for="${name}"> ${name}</label >
-      <input
-        ${disabled ? "disabled" : ""}
-        type="${type}"
-        name="${name}"
-        value="${value}"
-      />
-    </div>
+		<div>
+			<label for="${name}"> ${name}</label >
+			<input
+				${disabled ? "disabled" : ""}
+				type="${type}"
+				name="${name}"
+				value="${value}"
+			/>
+		</div>
 `
 }
 
 function addPhoneButton(index) {
 	return `
-    <button hx-swap="outerHTML" hx-get="/html-api/people?form=phone&index=${index}">
-    Add phone number
-    </button >
-  `
-
+		<button hx-swap="outerHTML" hx-get="/html-api/people?form=phone&index=${index}">
+		Add phone number
+		</button >
+	`
 }
 
 addEventListener("DOMContentLoaded", mockServer);
